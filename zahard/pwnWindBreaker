@@ -1,0 +1,73 @@
+#! /usr/bin/env python3
+
+# Date:         Sat Dec 25 11:26:29 PM CST 2021
+# Description:  Download Wind Breaker chapters from zahard
+
+from bs4 import BeautifulSoup
+from pwn import *
+import requests
+import os
+
+# spider parameters
+prefix = 'https://zahard.xyz/manga/41-wind-breaker'
+chapters = range(390, 400 + 1)
+download_path = './chapters'
+html_tag = {
+    'tag': 'img',
+    'source': 'data-src'
+}
+tag_filter = {'class': 'img-responsive'}
+timeout = 15
+
+# progress bar
+p = log.progress('Downloading')
+
+# iterate chapters
+for chapter in chapters:
+    # update status
+    p.status('Chapter {} - 0.00%'.format(chapter))
+
+    # request connection to website
+    url = '{}/{}/'.format(prefix, chapter)
+    try:
+        r = requests.get(url, timeout=timeout)
+    except:
+        p.failure('Timeout in chapter url {}'.format(url))
+        sys.exit(1)
+    if not r.ok:
+        p.failure('Connection error in chapter url {}'.format(url))
+        sys.exit(1)
+
+    # create folder for the chapter if not exists
+    os.makedirs('{}/{:03}/'.format(download_path, chapter), exist_ok=True)
+
+    # generate list of pages
+    images = []
+    bs = BeautifulSoup(r.text, 'html.parser')
+    for img in bs.find_all(html_tag['tag'], tag_filter):
+        try:
+            images.append( img[html_tag['source']].strip() )
+        except:
+            pass
+
+    # iterate pages
+    for i, img_url in enumerate(images):
+        # request image
+        try:
+            r = requests.get(img_url, timeout=timeout)
+        except:
+            p.failure('Timeout in page url {}'.format(img_url))
+            sys.exit(1)
+        if not r.ok:
+            p.failure('Connection error in page url {}'.format(img_url))
+            sys.exit(1)
+
+        # download page
+        with open('{}/{:03}/{:02}.jpg'.format(download_path, chapter, i+1), 'wb') as f:
+            f.write(r.content)
+
+        # update status
+        total = len(images)
+        p.status('Chapter {} - {:.2f}%'.format( chapter, (i+1)/total*100 ) )
+
+p.success('Done')
