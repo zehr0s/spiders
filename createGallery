@@ -42,3 +42,4 @@ for chapter in os.listdir('chapters'):
         f.write( html.replace('holder', imgs + '\n') )
 
 print('file://{}/chapters/'.format(os.getcwd()))
+print('http://0.0.0.0:8080/')
