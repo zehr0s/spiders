@@ -11,7 +11,7 @@ PROGRESS_TITLE = 'Downloading'
 try:
     from bs4 import BeautifulSoup
 except ModuleNotFoundError:
-    print('[!] Missing module: pip install bs4')
+    print('[!] Missing module: pip install beautifulsoup4')
 try:
     from pwn import *
 except ModuleNotFoundError:
