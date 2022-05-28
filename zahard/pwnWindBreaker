@@ -3,14 +3,69 @@
 # Date:         Sat Dec 25 11:26:29 PM CST 2021
 # Description:  Download Wind Breaker chapters from zahard
 
-from bs4 import BeautifulSoup
-from pwn import *
-import requests
+# const
+PROGRESS_MOD = 0
+
+# modules
+try:
+    from bs4 import BeautifulSoup
+except ModuleNotFoundError:
+    print('[!] Missing module: pip install bs4')
+try:
+    from pwn import *
+except ModuleNotFoundError:
+    print('[!] Switched progress module')
+    PROGRESS_MOD = 2
+try:
+    import requests
+except ModuleNotFoundError:
+    print('[!] Missing module: pip install requests')
+import sys
 import os
+
+if PROGRESS_MOD == 0:
+    p = log.progress('Downloading')
+
+
+# functions
+def print_custom(message, type=0):
+    global PROGRESS_MOD
+    '''
+    type
+        0: status
+        1: error
+        2: success
+    progress_module
+        0: pwn
+        1: TODO
+        2: built-in
+    '''
+    if PROGRESS_MOD == 0:       # pwn
+        global p
+        if type == 0:           # status
+            p.status(message)
+        elif type == 1:         # error
+            p.failure(message)
+        else:                   # success
+            p.success(message)
+    elif PROGRESS_MOD == 1:     # TODO
+        if type == 0:           # status
+            pass
+        elif type == 1:         # error
+            pass
+        else:                   # success
+            pass
+    else:                       # built-in
+        if type == 0:           # status
+            print('[+] Downloading: {}'.format(message))
+        elif type == 1:         # error
+            print('[!] Downloading: {}'.format(message))
+        else:                   # success
+            print('[*] Downloading: {}'.format(message))
 
 # spider parameters
 prefix = 'https://zahard.xyz/manga/41-wind-breaker'
-chapters = range(390, 400 + 1)
+chapters = range(380, 381 + 1)
 download_path = './chapters'
 html_tag = {
     'tag': 'img',
@@ -19,23 +74,20 @@ html_tag = {
 tag_filter = {'class': 'img-responsive'}
 timeout = 15
 
-# progress bar
-p = log.progress('Downloading')
-
 # iterate chapters
 for chapter in chapters:
     # update status
-    p.status('Chapter {} - 0.00%'.format(chapter))
+    print_custom('Chapter {} - 0.00%'.format(chapter))
 
     # request connection to website
     url = '{}/{}/'.format(prefix, chapter)
     try:
         r = requests.get(url, timeout=timeout)
     except:
-        p.failure('Timeout in chapter url {}'.format(url))
+        print_custom('Timeout in chapter url {}'.format(url), type=1)
         sys.exit(1)
     if not r.ok:
-        p.failure('Connection error in chapter url {}'.format(url))
+        print_custom('Connection error in chapter url {}'.format(url), type=1)
         sys.exit(1)
 
     # create folder for the chapter if not exists
@@ -56,10 +108,10 @@ for chapter in chapters:
         try:
             r = requests.get(img_url, timeout=timeout)
         except:
-            p.failure('Timeout in page url {}'.format(img_url))
+            print_custom('Timeout in page url {}'.format(img_url), type=1)
             sys.exit(1)
         if not r.ok:
-            p.failure('Connection error in page url {}'.format(img_url))
+            print_custom('Connection error in page url {}'.format(img_url), type=1)
             sys.exit(1)
 
         # download page
@@ -68,6 +120,6 @@ for chapter in chapters:
 
         # update status
         total = len(images)
-        p.status('Chapter {} - {:.2f}%'.format( chapter, (i+1)/total*100 ) )
+        print_custom('Chapter {} - {:.2f}%'.format( chapter, (i+1)/total*100 ))
 
-p.success('Done')
+print_custom('Done', type=-1)
