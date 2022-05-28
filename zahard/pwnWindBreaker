@@ -16,6 +16,7 @@ try:
     from pwn import *
 except ModuleNotFoundError:
     try:
+        import progressbar
         PROGRESS_MOD = 1
     except ModuleNotFoundError:
         PROGRESS_MOD = 2
@@ -62,7 +63,7 @@ def print_custom(message, type=0):
             bar.update()
             bar.finish()
     else:                       # built-in
-        os.system('cls|clear')
+        os.system('clear|cls')
         if type == 0:           # status
             print('[+] {}: {}'.format(PROGRESS_TITLE, message))
         elif type == 1:         # error
