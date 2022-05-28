@@ -37,7 +37,7 @@ def print_custom(message, type=0):
         2: success
     progress_module
         0: pwn
-        1: TODO
+        1: progressbar2
         2: built-in
     '''
     if PROGRESS_MOD == 0:       # pwn
@@ -81,7 +81,7 @@ except FileNotFoundError:
     os.makedir(download_path)
 
 # spider parameters
-source = 'https://zahard.xyz/manga/41-wind-breaker'
+source = 'https://zahard.xyz/manga/41-wind-breaker' # https://manhwacity.com/manhwa/wind-breaker/
 timeout = 15
 chapter_filter = {'class': 'chapter-title-rtl'}
 chapter_tag = {
@@ -111,7 +111,6 @@ available_chapters.sort()
 if PROGRESS_MOD == 0:
     p = log.progress(PROGRESS_TITLE)
 elif PROGRESS_MOD == 1:
-    import progressbar
     format_custom_text = progressbar.FormatCustomText(
         '%(msg)s',
         dict(
@@ -121,7 +120,7 @@ elif PROGRESS_MOD == 1:
 
     bar = progressbar.ProgressBar(widgets=[
         progressbar.AnimatedMarker(),
-        " Downloading: ",
+        " {}: ".format(PROGRESS_TITLE),
         format_custom_text,
     ])
 
