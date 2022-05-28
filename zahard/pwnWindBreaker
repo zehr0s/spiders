@@ -15,17 +15,17 @@ except ModuleNotFoundError:
 try:
     from pwn import *
 except ModuleNotFoundError:
-    print('[!] Switched progress module')
-    PROGRESS_MOD = 2
+    try:
+        PROGRESS_MOD = 1
+    except ModuleNotFoundError:
+        PROGRESS_MOD = 2
 try:
     import requests
 except ModuleNotFoundError:
     print('[!] Missing module: pip install requests')
+import shutil
 import sys
 import os
-
-if PROGRESS_MOD == 0:
-    p = log.progress(PROGRESS_TITLE)
 
 # functions
 def print_custom(message, type=0):
@@ -48,14 +48,21 @@ def print_custom(message, type=0):
             p.failure(message)
         else:                   # success
             p.success(message)
-    elif PROGRESS_MOD == 1:     # TODO
+    elif PROGRESS_MOD == 1:     # progressbar2
+        global format_custom_text, bar
         if type == 0:           # status
-            pass
+            format_custom_text.update_mapping(msg=message)
+            bar.update()
         elif type == 1:         # error
-            pass
+            format_custom_text.update_mapping(msg=message)
+            bar.update()
+            bar.finish()
         else:                   # success
-            pass
+            format_custom_text.update_mapping(msg=message)
+            bar.update()
+            bar.finish()
     else:                       # built-in
+        os.system('cls|clear')
         if type == 0:           # status
             print('[+] {}: {}'.format(PROGRESS_TITLE, message))
         elif type == 1:         # error
@@ -63,35 +70,85 @@ def print_custom(message, type=0):
         else:                   # success
             print('[*] {}: {}'.format(PROGRESS_TITLE, message))
 
+# get downloaded chapters
+start_point = 390
+download_path = 'chapters'
+downloaded = []
+
+try:
+    downloaded = os.listdir(download_path)
+except FileNotFoundError:
+    os.makedir(download_path)
+
 # spider parameters
-prefix = 'https://zahard.xyz/manga/41-wind-breaker'
-chapters = range(380, 381 + 1)
-download_path = './chapters'
+source = 'https://zahard.xyz/manga/41-wind-breaker'
+timeout = 15
+chapter_filter = {'class': 'chapter-title-rtl'}
+chapter_tag = {
+    'tag': 'h5',
+    'sub': 'a',
+    'source': 'href'
+}
+tag_filter = {'class': 'img-responsive'}
 html_tag = {
     'tag': 'img',
     'source': 'data-src'
 }
-tag_filter = {'class': 'img-responsive'}
-timeout = 15
+
+r = requests.get(source, timeout=timeout)
+bs = BeautifulSoup(r.text, 'html.parser')
+
+available_chapters = []
+for title in bs.find_all(chapter_tag['tag'], chapter_filter):
+    for ref in title.find_all(chapter_tag['sub']):
+        ch_number = ref[chapter_tag['source']].split('/')[-1]
+        if int(ch_number) >= start_point:
+            if ch_number in downloaded:
+                continue
+            available_chapters.append(ref[chapter_tag['source']])
+available_chapters.sort()
+
+if PROGRESS_MOD == 0:
+    p = log.progress(PROGRESS_TITLE)
+elif PROGRESS_MOD == 1:
+    import progressbar
+    format_custom_text = progressbar.FormatCustomText(
+        '%(msg)s',
+        dict(
+            msg="",
+        ),
+    )
+
+    bar = progressbar.ProgressBar(widgets=[
+        progressbar.AnimatedMarker(),
+        " Downloading: ",
+        format_custom_text,
+    ])
+
+if not available_chapters:
+    print_custom('Up to date', type=-1)
+    sys.exit(0)
 
 # iterate chapters
-for chapter in chapters:
+for chapter in available_chapters:
+    # get number
+    chapter_number = chapter.split('/')[-1]
+
     # update status
-    print_custom('Chapter {} - 0.00%'.format(chapter))
+    print_custom('Chapter {} - 0.00%'.format(chapter_number))
 
     # request connection to website
-    url = '{}/{}/'.format(prefix, chapter)
     try:
-        r = requests.get(url, timeout=timeout)
+        r = requests.get(chapter, timeout=timeout)
     except:
-        print_custom('Timeout in chapter url {}'.format(url), type=1)
+        print_custom('Timeout in chapter url {}'.format(chapter), type=1)
         sys.exit(1)
     if not r.ok:
-        print_custom('Connection error in chapter url {}'.format(url), type=1)
+        print_custom('Connection error in chapter url {}'.format(chapter), type=1)
         sys.exit(1)
 
     # create folder for the chapter if not exists
-    os.makedirs('{}/{:03}/'.format(download_path, chapter), exist_ok=True)
+    os.makedirs('{}/{}/'.format(download_path, chapter_number), exist_ok=True)
 
     # generate list of pages
     images = []
@@ -109,17 +166,21 @@ for chapter in chapters:
             r = requests.get(img_url, timeout=timeout)
         except:
             print_custom('Timeout in page url {}'.format(img_url), type=1)
+            # remove incomplete download
+            shutil.rmtree('{}/{}'.format(download_path, chapter_number))
             sys.exit(1)
         if not r.ok:
             print_custom('Connection error in page url {}'.format(img_url), type=1)
+            # remove incomplete download
+            shutil.rmtree('{}/{}'.format(download_path, chapter_number))
             sys.exit(1)
 
         # download page
-        with open('{}/{:03}/{:02}.jpg'.format(download_path, chapter, i+1), 'wb') as f:
+        with open('{}/{}/{:02}.jpg'.format(download_path, chapter_number, i+1), 'wb') as f:
             f.write(r.content)
 
         # update status
         total = len(images)
-        print_custom('Chapter {} - {:.2f}%'.format( chapter, (i+1)/total*100 ))
+        print_custom('Chapter {} - {:.2f}%'.format( chapter_number, (i+1)/total*100 ))
 
 print_custom('Done', type=-1)
