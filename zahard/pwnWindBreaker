@@ -5,6 +5,7 @@
 
 # const
 PROGRESS_MOD = 0
+PROGRESS_TITLE = 'Downloading'
 
 # modules
 try:
@@ -24,8 +25,7 @@ import sys
 import os
 
 if PROGRESS_MOD == 0:
-    p = log.progress('Downloading')
-
+    p = log.progress(PROGRESS_TITLE)
 
 # functions
 def print_custom(message, type=0):
@@ -57,11 +57,11 @@ def print_custom(message, type=0):
             pass
     else:                       # built-in
         if type == 0:           # status
-            print('[+] Downloading: {}'.format(message))
+            print('[+] {}: {}'.format(PROGRESS_TITLE, message))
         elif type == 1:         # error
-            print('[!] Downloading: {}'.format(message))
+            print('[!] {}: {}'.format(PROGRESS_TITLE, message))
         else:                   # success
-            print('[*] Downloading: {}'.format(message))
+            print('[*] {}: {}'.format(PROGRESS_TITLE, message))
 
 # spider parameters
 prefix = 'https://zahard.xyz/manga/41-wind-breaker'
