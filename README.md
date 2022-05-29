@@ -1,6 +1,6 @@
 # TODO
 - [ ] Spiders
-    - [ ] Download only new pictures
+    - [X] Download only new pictures
     - [ ] Generalize spiders
     - [ ] Encrypt links
 - [ ] Generate gallery
