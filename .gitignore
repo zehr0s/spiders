@@ -117,3 +117,6 @@
 *.webm
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,audio,video,images
+
+### Other files ###
+*.html
