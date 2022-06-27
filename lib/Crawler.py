@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#! /usr/bin/env python3
 
 # Author:       Author
 # Date:         June 26 2022 at 07:00:47 PM
