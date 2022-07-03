@@ -6,7 +6,8 @@
 
 from lib import Crawler
 
-'''
+base = 'https://www.readm.org'
+
 url = 'https://www.readm.org/manga/16103'
 skeleton = {
     'tag': 'h6',
@@ -14,9 +15,11 @@ skeleton = {
     'tag-target': 'a',
     'filter-target': {}
 }
-'''
 
-url = 'https://www.readm.org/manga/16103/1/all-pages'
+craw = Crawler(url, skeleton)
+urls = craw.search()
+urls = [ '{}{}'.format(base, url) for url in urls ]
+
 skeleton = {
     'tag': 'img',
     'filter': {'class' : 'img-responsive'},
@@ -24,8 +27,16 @@ skeleton = {
     'filter-target': None
 }
 
+chapters = []
 
-craw = Crawler(url, skeleton, source='src')
-urls = craw.search()
-for u in urls:
-    print('{}{}'.format('https://www.readm.org',u))
+total = len(chapters)
+for i, chapter in enumerate(urls):
+    if i == 2:
+        break
+    print('Chapters: {}/{}'.format(i+1, total))
+    craw = Crawler(chapter, skeleton, source='src')
+    chapters.append( craw.search() )
+
+for chapter in chapters:
+    for page in chapter:
+        print('{}{}'.format(base, page))
