@@ -96,7 +96,7 @@
 .nfs*
 
 # other tmp files
-.swp
+*.swp
 
 ### Video ###
 *.3g2
