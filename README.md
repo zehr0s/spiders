@@ -6,9 +6,11 @@
 ## TODO
 - [ ] Crawler
     - [ ] Reader
-        - [X] Get liks/images through a dictionary
-        - [ ] Make crawling through pages easier
-        - [ ] Currently supports one filter, generalize to N filters
+        - [X] Get pages through a dictionary
+        - [ ] Make pages attribute a property
+        - [ ] Pages menu
+            - [ ] Single selection
+            - [ ] Range selection
     - [ ] Downloader
         - [ ] From list
         - [ ] History
@@ -19,3 +21,5 @@
         - [ ] From links
 - [ ] Tools
     - [ ] Encrypt links
+        - [ ] Single
+        - [ ] From list
