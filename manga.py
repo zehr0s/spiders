@@ -7,36 +7,33 @@
 from lib import Crawler
 
 base = 'https://www.readm.org'
-
 url = 'https://www.readm.org/manga/16103'
-skeleton = {
+
+link_filter = {
     'tag': 'h6',
     'filter': {'class' : 'truncate'},
     'tag-target': 'a',
     'filter-target': {}
 }
 
-craw = Crawler(url, skeleton)
-urls = craw.search()
-urls = [ '{}{}'.format(base, url) for url in urls ]
-
-skeleton = {
+image_filter = {
     'tag': 'img',
     'filter': {'class' : 'img-responsive'},
-    'tag-target': None,
-    'filter-target': None
+    'source': 'src'
 }
 
-chapters = []
+craw = Crawler(base_url=base)
+craw.search(url, link_filter, use_base_prefix=True)
+craw.reverse_pages()
+total = len(craw.pages)
 
-total = len(chapters)
-for i, chapter in enumerate(urls):
+chapters = []
+for i, chapter in enumerate(craw.pages):
     if i == 2:
         break
     print('Chapters: {}/{}'.format(i+1, total))
-    craw = Crawler(chapter, skeleton, source='src')
-    chapters.append( craw.search() )
+    chapters.append( craw.search(chapter, image_filter, use_base_prefix=True) )
 
 for chapter in chapters:
     for page in chapter:
-        print('{}{}'.format(base, page))
+        print(page)
