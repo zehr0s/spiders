@@ -4,21 +4,19 @@
 - __Gallery:__ Creates a gallery of images (files or links)
 
 ## TODO
-- [ ] Crawler
-    - [X] Reader
-        - [X] Get pages through a dictionary
-        - [X] Pages menu
-            - [X] Single selection
-            - [X] Range selection
-    - [ ] Downloader
-        - [ ] From list
-        - [ ] History
-            - [ ] Continue downloading
-            - [ ] Save links
-    - [ ] Gallery
-        - [ ] From files
-        - [ ] From links
+- [X] Crawler
+    - [X] Get pages through a dictionary
+    - [X] Pages menu
+        - [X] Single selection
+        - [X] Range selection
+- [ ] Downloader
+    - [X] From list
+    - [ ] History
+        - [ ] Continue downloading
+        - [ ] Save links
+    - [ ] Only new files
+- [ ] Gallery
+    - [ ] From files
+    - [ ] From links
 - [ ] Tools
-    - [ ] Encrypt links
-        - [ ] Single
-        - [ ] From list
+    - [ ] Encrypt from large names to short names
