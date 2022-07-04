@@ -136,6 +136,7 @@ class Crawler:
 
         self.results = output
         self.pages = output
+        os.system('clear')
         return output
 
     def save(self, filename='output.log', path='.', custom_list=None, write_type='w'):
