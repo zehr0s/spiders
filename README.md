@@ -1,16 +1,15 @@
 # Crawler
-- *Reader:* Takes a dictionary and returns a list with the last tag content
-- *Downloader:* Takes a list of images and downloads them into a file
-- *Gallery:* Creates a gallery of images (files or links)
+- __Reader:__ Takes a dictionary and returns a list with the last tag content
+- __Downloader:__ Takes a list of images and downloads them into a file
+- __Gallery:__ Creates a gallery of images (files or links)
 
 ## TODO
 - [ ] Crawler
-    - [ ] Reader
+    - [X] Reader
         - [X] Get pages through a dictionary
-        - [ ] Make pages attribute a property
-        - [ ] Pages menu
-            - [ ] Single selection
-            - [ ] Range selection
+        - [X] Pages menu
+            - [X] Single selection
+            - [X] Range selection
     - [ ] Downloader
         - [ ] From list
         - [ ] History
