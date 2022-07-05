@@ -12,10 +12,10 @@ import os
 
 # Target
 base = 'https://www.readm.org'
-url = 'https://www.readm.org/manga/one-piece'   # One Piece
-# url = 'https://www.readm.org/manga/16103'     # One Punch
+# url = 'https://www.readm.org/manga/one-piece' # One Piece
+url = 'https://www.readm.org/manga/16103'       # One Punch
 # url = 'https://www.readm.org/manga/8064'      # Windbreaker
-
+current_title = 'one-punch-man'
 # Filters
 link_filter = {
     'tag': 'h6',
@@ -56,4 +56,4 @@ for i, info in enumerate(zip(titles, chapters)):
     os.system('clear')
 
 # Create scroll gallery
-scrollable('manga/one-punch')
+scrollable('manga/{}'.format(current_title))
