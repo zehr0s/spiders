@@ -6,6 +6,8 @@
 
 from modules import Crawler
 from modules import Downloader
+from modules.Tools import scrollable
+from modules.Tools import grid
 import os
 
 # Target
@@ -25,7 +27,6 @@ image_filter = {
     'filter': {'class' : 'img-responsive'},
     'source': 'src'
 }
-
 
 # Get pages
 craw = Crawler(base_url=base)
@@ -51,3 +52,6 @@ for i, info in enumerate(zip(titles, chapters)):
     print('Chapters: {}/{} - {:.2f}%'.format( i+1, len(chapters), i/len(chapters) ))
     dl.download(chapter, 'manga/one-punch/{}'.format(title.split('/')[-2]))
     os.system('clear')
+
+# Create scroll gallery
+scrollable('manga/one-punch')

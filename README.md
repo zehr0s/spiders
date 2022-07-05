@@ -6,6 +6,7 @@
 ## TODO
 - [X] Crawler
     - [X] Get pages through a dictionary
+    - [ ] Add option either get text or source from a tag
     - [X] Pages menu
         - [X] Single selection
         - [X] Range selection
@@ -15,8 +16,11 @@
         - [ ] Continue downloading
         - [ ] Save links
     - [ ] Only new files
-- [ ] Gallery
-    - [ ] From files
-    - [ ] From links
 - [ ] Tools
+    - [ ] Gallery
+        - [X] From files
+        - [ ] From links
+        - [X] Scroll
+        - [X] Grid
+            - [ ] Fix proportions
     - [ ] Encrypt from large names to short names
