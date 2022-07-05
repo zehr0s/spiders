@@ -4,7 +4,7 @@
 - __Gallery:__ Creates a gallery of images (files or links)
 
 ## TODO
-- [X] Crawler
+- [ ] Crawler
     - [X] Get pages through a dictionary
     - [ ] Add option either get text or source from a tag
     - [X] Pages menu
@@ -22,5 +22,4 @@
         - [ ] From links
         - [X] Scroll
         - [X] Grid
-            - [ ] Fix proportions
     - [ ] Encrypt from large names to short names
