@@ -103,7 +103,7 @@ class Crawler:
             elif option in ['p', 'P']:
                 i = total_pages-1 if i-1 < 0 else i-1
             elif option in ['s', 'S']:
-                print('[X] Back\t[S] Single\t[R] Range\t[A] All\t', end='')
+                print('[X] Back\t[S] Single\t[R] Range\t[A] All\t\t', end='')
                 selection = input('Option: ')
                 if selection in ['x', 'X']:
                     pass
