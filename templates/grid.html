@@ -1,0 +1,61 @@
+<!--
+    NOTE: TAG div class="imgbox"
+          MUST BE IN LINE -5
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Gallery</title>
+        <style>
+            body, img{
+                padding: 0;
+                margin: 0;
+                border: 0;
+                text-align: center;
+                font-size: 0;
+            }
+
+            div.parent{
+                width: 100%;
+                height: auto;
+                margin: 0px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            div.imgbox {
+                float: left;
+                width: 400px;
+                height: 400px;
+                display: flex;
+                overflow: hidden;
+                border:solid 1px #fff;
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: cover;
+                margin: 8px;
+                border-radius: 16px;
+            }
+
+            a{
+                width: 100%;
+                height: 100%;
+            }
+
+            @media only screen and (max-width: 1080px) {
+                 div.imgbox{
+                     width: 180px;
+                     height: 180px;
+                 }
+             }
+        </style>
+    </head>
+    <body bgcolor="#131315">
+    <nav>
+        <div class="parent">
+            <div class="imgbox" style='background-image: url("img-holder")'> <a target="_blank" href="img-holder"></a> </div>
+        </div>
+    </body>
+</html>
