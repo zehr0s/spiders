@@ -12,7 +12,9 @@ import os
 
 # Target
 base = 'https://www.readm.org'
-url = 'https://www.readm.org/manga/16103'
+url = 'https://www.readm.org/manga/one-piece'   # One Piece
+# url = 'https://www.readm.org/manga/16103'     # One Punch
+# url = 'https://www.readm.org/manga/8064'      # Windbreaker
 
 # Filters
 link_filter = {
