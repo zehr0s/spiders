@@ -23,3 +23,4 @@
         - [X] Scroll
         - [X] Grid
     - [ ] Encrypt from large names to short names
+    - [ ] Human Sorting
