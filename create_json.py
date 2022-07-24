@@ -23,7 +23,7 @@ Make the levels flexible [sync w/ modules/Tools.py]
 #head = 'handmade/manhwa365'
 #head = 'handmade/zahard'
 #head = 'tmp-pictures'
-#head = 'manga'
+head = 'manga'
 
 cwd = os.getcwd()
 path = os.path.join(cwd, head)

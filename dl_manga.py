@@ -12,10 +12,10 @@ import os
 
 # Target
 base = 'https://www.readm.org'
-# url = 'https://www.readm.org/manga/one-piece' # One Piece
-url = 'https://www.readm.org/manga/16103'       # One Punch
+url = 'https://www.readm.org/manga/one-piece' # One Piece
+# url = 'https://www.readm.org/manga/16103'       # One Punch
 # url = 'https://www.readm.org/manga/8064'      # Windbreaker
-current_title = 'one-punch'
+current_title = 'one-piece'
 # Filters
 link_filter = {
     'tag': 'h6',
@@ -51,7 +51,9 @@ os.system('clear')
 dl = Downloader(prefix = 'Pages')
 for i, info in enumerate(zip(titles, chapters)):
     title, chapter = info
-    print('Chapters: {}/{} - {:.2f}%'.format( i+1, len(chapters), i/len(chapters) ))
+    if len(chapter) == 0:
+        continue
+    print('Chapters: {}/{} - {:.2f} %'.format( i+1, len(chapters), i/len(chapters)*100 ))
     dl.download(chapter, 'manga/{}/{}'.format(current_title, title.split('/')[-2]))
     os.system('clear')
 

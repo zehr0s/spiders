@@ -42,7 +42,7 @@ class Downloader:
                 self.print_custom('Timeout in page url {}'.format(img_url), type=1)
                 # Remove incomplete download
                 shutil.rmtree('{}'.format(download_path))
-                sys.exit(1)
+                continue
             except KeyboardInterrupt:
                 self.print_custom('Keyboad Interrupt in {}'.format(img_url), type=1)
                 # Remove incomplete download
@@ -52,12 +52,12 @@ class Downloader:
                 self.print_custom('Error in {}'.format(img_url), type=1)
                 # Remove incomplete download
                 shutil.rmtree('{}'.format(download_path))
-                sys.exit(1)
+                continue
             if not r.ok:
                 self.print_custom('Connection error in page url {}'.format(img_url), type=1)
                 # remove incomplete download
                 shutil.rmtree('{}'.format(download_path))
-                sys.exit(1)
+                continue
 
             # download page
             with open('{}/{:02}.jpg'.format(download_path, i+1), 'wb') as f:
@@ -65,5 +65,5 @@ class Downloader:
 
             # update status
             total = len(links)
-            self.print_custom('{:.2f}%'.format( (i+1)/total*100 ))
+            self.print_custom('{:.2f} %'.format( (i+1)/total*100 ))
 
