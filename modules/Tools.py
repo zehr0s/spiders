@@ -104,12 +104,23 @@ HTML_GRID = '''
 
 IMAGE_HOLDER = 'img-holder'
 
+''' TODO:
+Input:
+    chapters_path
+Structute:
+    chapters_path/chapter-n/image-n.jpg
+                 |L1       |
+                           |L2
+Make the levels flexible [sync w/ ../create_json.py]
+    L = 2 -> L = n
+'''
+
 def scrollable(chapters_path, output_path='.'):
     holder = HTML_SCROLLABLE.split('\n')[-5]
     for chapter in os.listdir(chapters_path):
         imgs = ''
         for page in sorted(os.listdir('{}/{}'.format(chapters_path, chapter))):
-            if not (page[-3:].lower() in ['jpg', 'png']):
+            if not (page.split('.')[-1].lower() in ['jpeg', 'jpg', 'png']):
                 continue
             imgs = imgs + holder.replace(IMAGE_HOLDER, page)
         with open('{}/{}/scroll.html'.format(chapters_path, chapter), 'w') as f:
@@ -123,7 +134,7 @@ def grid(chapters_path, output_path='.'):
     for chapter in os.listdir(chapters_path):
         imgs = ''
         for page in sorted(os.listdir('{}/{}'.format(chapters_path, chapter))):
-            if not (page[-3:].lower() in ['jpg', 'png']):
+            if not (page.split('.')[-1].lower() in ['jpg', 'jpeg', 'png']):
                 continue
             imgs = imgs + holder.replace(IMAGE_HOLDER, page)
         with open('{}/{}/grid.html'.format(chapters_path, chapter), 'w') as f:

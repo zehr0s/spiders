@@ -20,7 +20,6 @@ urls = [
     'aHR0cHM6Ly9lbHBhY2submV0L3BhY2stZGUtbWFyaW5hLW11aS15b3V0dWJlci1mb3Rvcy1kZXNudWRhLWZpbHRyYWRhcy1mb3Rvcy1kZS1wYWdvLw==',
     'aHR0cHM6Ly9lbHBhY2submV0L3BhY2stZGUteGxpZ2h0bW9vbngtc3RyZWFtZXItZm90b3MtaG90LWRlLXN1LW1pcHJpdi1hY3R1YWxpemFkby0yNy0wMS0yMDIyLw==',
     'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUteGxpZ2h0bW9vbngtc3RyZWFtZXItZm90aXRvcy1ob3QtZGUtc3Utb2YtZm90b3MtZGUtcGFnby8=',
-    'aHR0cHM6Ly9lbHBhY2submV0L3BhY2stZGUtZGVmaWFudHBhbmRhLXRpa3Rva2VyLWZvdG9zLW1hcy1jYWNob25kYXMtZm90b3MtZGUtcGFnby8=',
     'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtYXJ1cnVjaGVycnktc3RyZWFtZXItZm90b3MtZmlsdHJhZGFzLWRlLXN1LXBhdHJlb24v',
     'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtdXI0dml0eS1jb3NwbGF5ZXItZm90b3MtZmlsdHJhZGFzLWhvdC1jb250ZW5pZG8tcHJpdmFkby8=',
     'aHR0cHM6Ly9lbHBhY2submV0L3BhY2stZGUtanVwaXRlci1idW5ueS1lZ2lybC13YWlmdS1zZXh5LXRlZW4tZm90b3MtZGUtcGFnby8=',
@@ -38,6 +37,12 @@ urls = [
     'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtbWVsYWRpbmhhLWNvc3BsYXllci1mb3Rvcy1kZXNudWRhLWNvbnRlbmlkby1wcml2YWRvLw==',
     'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtYmFieWxhdXItdGlrdG9rZXItcmljYS10ZXRvbmEtZm90b3MtZGUtcGFnby8=',
 ]
+
+''' uncomment to see the names & ./generic | base64 -d
+for name in urls:
+    print(name + 'Cg==')
+sys.exit(1)
+'''
 
 total = len(urls)
 
