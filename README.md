@@ -14,7 +14,7 @@
     - [X] From list
     - [ ] History
         - [ ] Continue downloading
-        - [ ] Save links
+        - [X] Save links
     - [ ] Only new files
 - [ ] Tools
     - [ ] Gallery
