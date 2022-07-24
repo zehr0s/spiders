@@ -7,8 +7,24 @@
 import os
 import json
 
-head = 'handmade/custom'
-# head = 'manga'
+''' TODO:
+Input:
+    image-folder
+Structure:
+    image-folder/title-n/chapter-n/image-n.jpg
+                |L1     |         |
+                        |L2       |
+                                  |L3
+Make the levels flexible [sync w/ modules/Tools.py]
+    L = 3 -> L = n
+'''
+
+#head = 'handmade/custom'
+#head = 'handmade/manhwa365'
+#head = 'handmade/zahard'
+#head = 'tmp-pictures'
+#head = 'manga'
+
 cwd = os.getcwd()
 path = os.path.join(cwd, head)
 
@@ -34,6 +50,7 @@ for file in os.listdir(path):
         # print('L2: ' + ch)
         for html in os.listdir(path_l2):
             path_l3 = os.path.join(path_l2, html)
+            # print('L3: ' + html)
             if os.path.isdir(path_l3):
                 continue
             if html.split('.')[-1].lower() == 'html':
