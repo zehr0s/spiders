@@ -16,6 +16,7 @@
         - [ ] Continue downloading
         - [X] Save links
     - [ ] Only new files
+    - [ ] Output Levels
 - [ ] Tools
     - [ ] Gallery
         - [X] From files
@@ -24,3 +25,4 @@
         - [X] Grid
     - [ ] Encrypt from large names to short names
     - [ ] Human Sorting
+    - [ ] Input Levels
