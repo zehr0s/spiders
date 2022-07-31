@@ -27,14 +27,13 @@ else:
     print('{} <url> <output-path>'.format(sys.argv[0]))
     sys.exit(1)
 
+# Get video source link
 print('Requesting data ...')
 r = requests.post(link, timeout=timeout, headers=headers)
 bs = BeautifulSoup(r.text, 'html.parser')
-# Get source link
 for k, target in enumerate(bs.find_all('link')):
     if not ('www.tiktok.com' in target['href']):
         continue
-    # print(target['href'])
     break
 
 # Get video meta data
@@ -48,6 +47,14 @@ v_quality = meta['ItemModule'][id]['video']['videoQuality']
 v_definition = meta['ItemModule'][id]['video']['definition']
 dl_addr = meta['ItemModule'][id]['video']['playAddr']
 
+# Print info
+out_path = os.path.join(out_path, author)
+out_name = os.path.join(out_path, '{}-{}-{}.{}'.format(id, v_quality, v_definition, v_format.lower()))
+print(
+    '\nDownloading {}:\n\tUser: {}\n\tVideo ID: {}\n\tQuality: {}\n\tDefinition: {}\n\tFormat: {}'
+    .format(out_name, author, id, v_quality, v_definition, v_format.lower())
+)
+
 # Request video data
 r = requests.get(dl_addr, timeout=timeout, headers=headers)
 if not r.ok:
@@ -55,15 +62,8 @@ if not r.ok:
 
 # Create output path
 os.makedirs(out_path, exist_ok=True)
-out_path = os.path.join(out_path, author)
-os.makedirs(out_path, exist_ok=True)
-out_name = os.path.join(out_path, '{}-{}-{}.{}'.format(id, v_quality, v_definition, v_format.lower()))
 
 # Download video
-print(
-    '\nDownloading {}:\n\tUser: {}\n\tVideo ID: {}\n\tQuality: {}\n\tDefinition: {}\n\tFormat: {}'
-    .format(out_name, author, id, v_quality, v_definition, v_format.lower())
-)
 with open(out_name, 'wb') as f:
     for chunk in r.iter_content(chunk_size = 1024*1024):
         if chunk:
