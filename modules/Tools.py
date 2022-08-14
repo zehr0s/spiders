@@ -107,37 +107,51 @@ HTML_GRID = '''
 '''
 
 IMAGE_HOLDER = 'img-holder'
+types = [
+    'grid',
+    'scrollable'
+]
 
-# TODO: Combine scrollable & grid into one function w/ options to create either one or both
-def scrollable(chapters_path):
-    holder = HTML_SCROLLABLE.split('\n')[-5]
+'''
+TODO: take create_menu code as example to create the gallery at the last level
+
+create_menu structure:
+    Path/Sub-Titles/....../Pictures.ext
+        |L1        |L2    |LN (Create gallery here)
+'''
+def create_gallery(chapters_path, type='gallery'):
+    if type == types[0]:
+        holder = HTML_GRID.split('\n')[-5]
+        html = HTML_GRID
+    elif type == types[1]:
+        holder = HTML_SCROLLABLE.split('\n')[-5]
+        html = HTML_SCROLLABLE
+    else:
+        raise Exception('Not a gallery type')
+
     for chapter in os.listdir(chapters_path):
         imgs = ''
         for page in sorted(os.listdir('{}/{}'.format(chapters_path, chapter))):
             if not (page.split('.')[-1].lower() in ['jpeg', 'jpg', 'png']):
                 continue
             imgs = imgs + holder.replace(IMAGE_HOLDER, page)
-        with open('{}/{}/scroll.html'.format(chapters_path, chapter), 'w') as f:
-            f.write( HTML_SCROLLABLE.replace(holder, imgs + '\n') )
+        with open('{}/{}/{}.html'.format(chapters_path, chapter, type), 'w') as f:
+            f.write( html.replace(holder, imgs + '\n') )
 
-    print('file://{}/{}/'.format(os.getcwd(),chapters_path))
-    # print('http://0.0.0.0:8080/')
-
-def grid(chapters_path):
-    holder = HTML_GRID.split('\n')[-5]
-    for chapter in os.listdir(chapters_path):
-        imgs = ''
-        for page in sorted(os.listdir('{}/{}'.format(chapters_path, chapter))):
-            if not (page.split('.')[-1].lower() in ['jpg', 'jpeg', 'png']):
-                continue
-            imgs = imgs + holder.replace(IMAGE_HOLDER, page)
-        with open('{}/{}/grid.html'.format(chapters_path, chapter), 'w') as f:
-            f.write( HTML_GRID.replace(holder, imgs + '\n') )
-
-    print('file://{}/{}/'.format(os.getcwd(),chapters_path))
+    print('[+] {} gallery: file://{}/{}/'.format(type.title(), os.getcwd(),chapters_path))
     # print('http://0.0.0.0:8080/')
 
 # TODO: Format the .json menu & order in human readable format
+'''
+Structure allowed:
+create_menu structure:
+    Path/Sub-Titles/....../Pictures.ext
+        |L1        |L2    |LN
+
+default structure
+    Path/Sub-Titles/Pictures.ext
+        |L1        |L2
+'''
 def create_menu(root, output_path='.', levels=2, local=False):
     last_heads = [root]
     root_web = os.getcwd() if local else 'http://localhost:8080/'
@@ -180,7 +194,11 @@ def create_menu(root, output_path='.', levels=2, local=False):
         f.write(json.dumps(structure, indent=4))
     print('[+] {}'.format(out_name))
 
-# TODO: Combine create_menu w/ grid & scrollable
+def create_galleries(path):
+    for gallery in types:
+        create_gallery(path, type=gallery)
+
+# TODO: Combine create_menu w/ create_gallery/ies
 def create_all():
     pass
 
@@ -193,8 +211,7 @@ class __SimpleHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         else:
             super().do_GET()
 
-
-# TODO: Debug close properlly
+# TODO: Debug properlly terminate connection
 def start_server(port=8080):
     httpd = socketserver.TCPServer(('', port), __SimpleHTTPRequestHandler)
     print('Server started on http://localhost:{}'.format(port))
@@ -208,4 +225,3 @@ def start_server(port=8080):
     httpd.shutdown()
 
     print('\n[!] Server stopped.')
-

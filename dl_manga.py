@@ -6,8 +6,7 @@
 
 from modules import Crawler
 from modules import Downloader
-from modules.Tools import scrollable
-from modules.Tools import grid
+from modules.Tools import create_gallery
 import os
 
 # Target
@@ -57,5 +56,8 @@ for i, info in enumerate(zip(titles, chapters)):
     dl.download(chapter, 'manga/{}/{}'.format(current_title, title.split('/')[-2]))
     os.system('clear')
 
-# Create scroll gallery
-scrollable('manga/{}'.format(current_title))
+# Create scrollable gallery
+create_gallery('manga/{}'.format(current_title), type='scrollable')
+
+# TODO: Create gallery and update menu
+# create_menu('manga/{}'.format(current_title), type='scrollable')

@@ -8,8 +8,7 @@ import os
 import json
 from modules.Tools import start_server
 from modules.Tools import create_menu
-from modules.Tools import scrollable
-from modules.Tools import grid
+from modules.Tools import create_galleries
 
 ''' Variables '''
 roots= [
@@ -20,9 +19,9 @@ roots= [
 ]
 
 print('== Updated ==')
-grid('handmade/custom/downloads')
-grid('handmade/manhwa365/chapters')
-grid('handmade/zahard/chapters')
+create_galleries('handmade/custom/downloads')
+create_galleries('handmade/manhwa365/chapters')
+create_galleries('handmade/zahard/chapters')
 print()
 
 for root in roots:
