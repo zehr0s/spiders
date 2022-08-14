@@ -5,6 +5,10 @@
 # Description:  Create a gallery from a list of images/links
 
 import os
+import json
+import http.server
+import socketserver
+
 
 HTML_SCROLLABLE = '''
 <!-- NOTE: TAG img MUST BE IN LINE -5 -->
@@ -104,18 +108,8 @@ HTML_GRID = '''
 
 IMAGE_HOLDER = 'img-holder'
 
-''' TODO:
-Input:
-    chapters_path
-Structute:
-    chapters_path/chapter-n/image-n.jpg
-                 |L1       |
-                           |L2
-Make the levels flexible [sync w/ ../create_json.py]
-    L = 2 -> L = n
-'''
-
-def scrollable(chapters_path, output_path='.'):
+# TODO: Combine scrollable & grid into one function w/ options to create either one or both
+def scrollable(chapters_path):
     holder = HTML_SCROLLABLE.split('\n')[-5]
     for chapter in os.listdir(chapters_path):
         imgs = ''
@@ -129,7 +123,7 @@ def scrollable(chapters_path, output_path='.'):
     print('file://{}/{}/'.format(os.getcwd(),chapters_path))
     # print('http://0.0.0.0:8080/')
 
-def grid(chapters_path, output_path='.'):
+def grid(chapters_path):
     holder = HTML_GRID.split('\n')[-5]
     for chapter in os.listdir(chapters_path):
         imgs = ''
@@ -142,3 +136,76 @@ def grid(chapters_path, output_path='.'):
 
     print('file://{}/{}/'.format(os.getcwd(),chapters_path))
     # print('http://0.0.0.0:8080/')
+
+# TODO: Format the .json menu & order in human readable format
+def create_menu(root, output_path='.', levels=2, local=False):
+    last_heads = [root]
+    root_web = os.getcwd() if local else 'http://localhost:8080/'
+    structure = {}
+    for level in range(levels):
+        new_heads = []
+        for head in last_heads:
+            if level == levels-1:
+                structure[head] = {}
+            # html_files = {'grid': [], 'scroll': []}
+            for entry in sorted(os.listdir(head)):
+                if not os.path.isdir(os.path.join(head, entry)):
+                    continue
+                new_heads.append(os.path.join(head, entry))
+                if level == levels-1:
+                    structure[head][new_heads[-1]] = []
+                    for html in os.listdir(new_heads[-1]):
+                        html_path = os.path.join(new_heads[-1], html)
+                        if os.path.isdir(html_path):
+                            continue
+                        if html.split('.')[-1].lower() == 'html':
+                            '''
+                            if html.split('.')[-2].lower() == 'grid':
+                                html_files['grid'].append(
+                                    'http://localhost:8080/' + os.path.join(new_heads[-1], html))
+                            else:
+                                html_files['scroll'].append(
+                                    'http://localhost:8080/' + os.path.join(new_heads[-1], html))
+                            '''
+                            structure[head][new_heads[-1]].append(
+                                os.path.join(root_web, new_heads[-1], html)
+                            )
+            #if level == levels-1:
+            #    structure[head] = {'chapters' : html_files}
+        last_heads = new_heads
+
+    os.makedirs(output_path, exist_ok=True)
+    out_name = os.path.join(output_path, 'menu-{}.json'.format(root.replace('/', '-')))
+    with open(out_name, 'w') as f:
+        f.write(json.dumps(structure, indent=4))
+    print('[+] {}'.format(out_name))
+
+# TODO: Combine create_menu w/ grid & scrollable
+def create_all():
+    pass
+
+class __SimpleHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == '/up':
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b'up')
+        else:
+            super().do_GET()
+
+
+# TODO: Debug close properlly
+def start_server(port=8080):
+    httpd = socketserver.TCPServer(('', port), __SimpleHTTPRequestHandler)
+    print('Server started on http://localhost:{}'.format(port))
+
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        pass
+
+    httpd.server_close()
+    httpd.shutdown()
+
+    print('\n[!] Server stopped.')
+

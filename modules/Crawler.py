@@ -139,6 +139,7 @@ class Crawler:
         os.system('clear')
         return output
 
+    # Dumps the lastest stored pages to a log file
     def save(self, filename='output.log', path='.', custom_list=None, write_type='w'):
         if custom_list == None:
             custom_list = self.pages

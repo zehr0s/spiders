@@ -16,11 +16,11 @@ urls = [
     'aHR0cHM6Ly9lbHBhY2submV0L3BhY2stZGUtc2h1bmxpLW1laS15b3V0dWJlci1mb3Rvcy1zdXBlci1jYWNob25kYS1mb3Rvcy1kZS1wYWdvLw==',
     'aHR0cHM6Ly9lbHBhY2submV0L3BhY2stZGUtY2hsb2Utb2tpY2hsb2VvLWZvdG9zLXN1cGVyLWNhY2hvbmRhcy1mb3Rvcy1kZS1wYWdvLw==',
     'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtZW1tYS13ZXNsZXktaW5mbHVlbmNlci1jdWxvbmEtaG90LWZvdG9zLWRlLXBhZ28v',
+    'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtaGFubmFoLW93by1zdHJlYW1lci1mb3Rvcy1maWx0cmFkYXMtb2Yv',
     'aHR0cHM6Ly9lbHBhY2submV0L2hhbm5haC1vd28tc3RyZWFtZXItcGFjay1kZS1mb3Rvcy1jYWNob25kYXMteS1kZXNudWRhLWZvdG9zLWRlLXBhZ28tYWN0dWFsaXphZG8tMTAtMDItMjAyMi8=',
     'aHR0cHM6Ly9lbHBhY2submV0L3BhY2stZGUtbWFyaW5hLW11aS15b3V0dWJlci1mb3Rvcy1kZXNudWRhLWZpbHRyYWRhcy1mb3Rvcy1kZS1wYWdvLw==',
     'aHR0cHM6Ly9lbHBhY2submV0L3BhY2stZGUteGxpZ2h0bW9vbngtc3RyZWFtZXItZm90b3MtaG90LWRlLXN1LW1pcHJpdi1hY3R1YWxpemFkby0yNy0wMS0yMDIyLw==',
     'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUteGxpZ2h0bW9vbngtc3RyZWFtZXItZm90aXRvcy1ob3QtZGUtc3Utb2YtZm90b3MtZGUtcGFnby8=',
-    'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtYXJ1cnVjaGVycnktc3RyZWFtZXItZm90b3MtZmlsdHJhZGFzLWRlLXN1LXBhdHJlb24v',
     'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtdXI0dml0eS1jb3NwbGF5ZXItZm90b3MtZmlsdHJhZGFzLWhvdC1jb250ZW5pZG8tcHJpdmFkby8=',
     'aHR0cHM6Ly9lbHBhY2submV0L3BhY2stZGUtanVwaXRlci1idW5ueS1lZ2lybC13YWlmdS1zZXh5LXRlZW4tZm90b3MtZGUtcGFnby8=',
     'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtbWlhLXdhaWZ1bWlpYS1jb3NwbGF5ZXItZm90b3MtZmlsdHJhZGFzLWhvdC1jb250ZW5pZG8tcHJpdmFkby8=',
@@ -35,14 +35,12 @@ urls = [
     'aHR0cHM6Ly9lbHBhY2submV0L2JlbGxlLWRlbHBoaW5lLXN0cmVhbWVyLXktY29zcGxheWVyLWZvdG9zLW1hcy1jYWNob25kYXMtZGVzbnVkYS1mb3Rvcy1kZS1wYWdvLw==',
     'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtbG93LWtleWRlYWRpbnNpZGUtZS1naXJsLXRldG9uYS1ob3QtZm90b3MtZGUtcGFnby8=',
     'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtbWVsYWRpbmhhLWNvc3BsYXllci1mb3Rvcy1kZXNudWRhLWNvbnRlbmlkby1wcml2YWRvLw==',
-    'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtYmFieWxhdXItdGlrdG9rZXItcmljYS10ZXRvbmEtZm90b3MtZGUtcGFnby8=',
 ]
 
-''' uncomment to see the names & ./generic | base64 -d
-for name in urls:
-    print(name + 'Cg==')
-sys.exit(1)
-'''
+# uncomment to see the names & ./generic | base64 -d
+# for name in urls:
+#    print(name + 'Cg==')
+# sys.exit(1)
 
 total = len(urls)
 
