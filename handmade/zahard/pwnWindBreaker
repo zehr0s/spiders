@@ -79,7 +79,7 @@ downloaded = []
 try:
     downloaded = os.listdir(download_path)
 except FileNotFoundError:
-    os.makedir(download_path)
+    os.makedirs(download_path)
 
 # spider parameters
 source = 'https://zahard.xyz/manga/41-wind-breaker' # https://manhwacity.com/manhwa/wind-breaker/
