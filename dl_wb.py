@@ -10,14 +10,8 @@ from modules.Tools import create_gallery
 import os
 
 # Target
-# base = 'https://www.readm.org'
-# url = 'https://www.readm.org/manga/one-piece' # One Piece
-# url = 'https://www.readm.org/manga/16103'       # One Punch
-# url = 'https://www.readm.org/manga/8064'      # Windbreaker
-
 base = 'https://luminousscans.com'
 search = base + '/?s=wind+breaker'
-
 current_title = 'windbreaker'
 
 # Filters
