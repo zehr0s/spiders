@@ -15,10 +15,24 @@ import os
 # url = 'https://www.readm.org/manga/16103'       # One Punch
 # url = 'https://www.readm.org/manga/8064'      # Windbreaker
 
-base = "https://luminousscans.com"
-url = "https://luminousscans.com/series/1653732347-wind-breaker/"
+base = 'https://luminousscans.com'
+search = base + '/?s=wind+breaker'
 
 current_title = 'windbreaker'
+
+# Filters
+link_filter = {
+    'tag': 'div',
+    'filter': {'class' : 'listupd'},
+    'tag-target': 'a',
+    'filter-target': {},
+    'source': 'href'
+}
+
+# Get series' url
+craw = Crawler(base_url=base)
+craw.search(search, link_filter, use_base_prefix=False)
+url = craw.pages[0]
 
 # Filters
 link_filter = {
@@ -36,7 +50,6 @@ image_filter = {
 }
 
 # Get pages
-craw = Crawler(base_url=base)
 craw.search(url, link_filter, use_base_prefix=False)
 # craw.reverse_pages()
 craw.navigate()
@@ -59,7 +72,7 @@ for i, info in enumerate(zip(titles, chapters)):
     if len(chapter) == 0:
         continue
     print('Chapters: {}/{} - {:.2f} %'.format( i+1, len(chapters), i/len(chapters)*100 ))
-    dl.download(chapter, 'manga/{}/{}'.format(current_title, title.split('/')[-2]))
+    dl.download(chapter, 'manga/{}/{}'.format(current_title, title.split('/')[-2].split('-')[-1]))
     os.system('clear')
 
 # Create scrollable gallery
