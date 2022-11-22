@@ -97,6 +97,7 @@ class Crawler:
             option = input('Option: ')
             if option in ['x', 'X']:
                 output = flat_list
+                raise Exception('Navigation ended')
                 break
             elif option in ['n', 'N']:
                 i = 0 if i+1 == total_pages else i+1
