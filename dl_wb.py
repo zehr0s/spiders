@@ -72,6 +72,5 @@ for i, info in enumerate(zip(titles, chapters)):
 # Create scrollable gallery
 create_gallery('manga/{}'.format(current_title), type='scrollable')
 
-
 # TODO: Create gallery and update menu
 # create_menu('manga/{}'.format(current_title), type='scrollable')
