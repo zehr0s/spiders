@@ -13,6 +13,7 @@ from bs4 import BeautifulSoup
 
 ''' Variables '''
 urls = [
+    'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtY2hlcnJ5LWFwcmljb3RzLXRpa3Rva2VyLWZvdG9zLWZpbHRyYWRhcy1kZXNudWRhLWZvdG9zLWRlLXBhZ28=',
     'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtYnJhbmR5LXJlbmVlLXRpa3Rva2VyLWhlcm1vc2EtdGV0b25hLWZvdG9zLWRlLXBhZ28vCg==',
     'aHR0cHM6Ly9lbHBhY2submV0L2VsLXBhY2stZGUtdmFsZXJpYS1iZWxlbi1pbmZsdWVuY2Vycy1jdWxvbmEtZm90b3MtZmlsdHJhZGFzLWNvbnRlbmlkby1wcml2YWRvLwo=',
     'aHR0cHM6Ly9lbHBhY2submV0L3BhY2stZGUtc2h1bmxpLW1laS15b3V0dWJlci1mb3Rvcy1zdXBlci1jYWNob25kYS1mb3Rvcy1kZS1wYWdvLw==',
