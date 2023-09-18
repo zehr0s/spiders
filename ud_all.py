@@ -13,13 +13,13 @@ from modules.Tools import create_galleries
 ''' Variables '''
 roots= [
     'handmade/custom',
-    'handmade/manhwa365',
-    'manga'
+#    'handmade/manhwa365',
+#    'manga'
 ]
 
 print('== Updated ==')
 create_galleries('handmade/custom/downloads')
-create_galleries('handmade/manhwa365/chapters')
+# create_galleries('handmade/manhwa365/chapters')
 print()
 
 for root in roots:
