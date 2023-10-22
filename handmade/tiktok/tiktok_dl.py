@@ -121,7 +121,20 @@ for dl_try in range(32):
     if not r3.ok:
         raise Exception(f"Status Code: {r3.status_code}")
     bs = BeautifulSoup(r3.text, "html.parser")
-    downloadables = [soup["href"] for soup in bs.find_all('a')]
+    # print(bs.find_all('a')[0]['href'])
+    downloadables = []
+    try:
+        downloadables = [soup['href'] for soup in bs.find_all('a')]
+    except KeyError:
+        for downloadable in [soup for soup in bs.find_all('a')]:
+            try:
+                html_obj = downloadable.get('href')
+            except:
+                continue
+            if html_obj and html_obj.startswith('http'):
+                downloadables.append(html_obj)
+    except Exception as e:
+        raise e
     try:
         downloadables.pop()
         if downloadables:
