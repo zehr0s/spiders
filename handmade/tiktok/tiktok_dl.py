@@ -47,12 +47,18 @@ else:
 r0 = requests.get(link, timeout=timeout, headers=headers)
 bs = BeautifulSoup(r0.text, 'html.parser')
 
-# Get video meta data
-meta = re.search('{.*AppContext.*}', bs.prettify()).group()
-meta = json.loads(meta)
-# with open('data.json', 'w') as f:
-#     f.write(json.dumps(meta))
-video_url  = meta['SEOState']['canonical']
+try:
+    # Get video meta data
+    meta = re.search('{.*seo\.abtest.*}', bs.prettify()).group() # AppContext
+    meta = json.loads(meta)
+    # print(json.dumps(meta, indent=4))
+    # with open('data.json', 'w') as f:
+    #     f.write(json.dumps(meta))
+    video_url  = meta['__DEFAULT_SCOPE__']['seo.abtest']['canonical']
+except KeyError:
+    video_url = link
+except Exception as e:
+    raise e
 
 # Get download meta data
 try:
