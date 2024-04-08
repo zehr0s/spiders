@@ -90,10 +90,10 @@ except:
     id = video_url.split('/')[-1]
     author = video_url.split('/')[-3][1:]
     if mobile:
-        out_name = os.path.join(out_path, '{}-{}-{}.{}'.format(author,id,datetime.date.today(),'mp4'))
+        out_name = os.path.join(out_path, '{}-{}.{}'.format(author,id,'mp4'))
     else:
         out_path = os.path.join(out_path, author)
-        out_name = os.path.join(out_path, '{}-{}.{}'.format(id,datetime.date.today(),'mp4'))
+        out_name = os.path.join(out_path, '{}.{}'.format(id,'mp4'))
     print(
         'Downloading {}:\n\tUser: {}\n\tVideo ID: {}'
         .format(out_name, author,id)
