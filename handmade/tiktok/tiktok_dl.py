@@ -145,10 +145,10 @@ else:
 for i, downloadable in enumerate(links[::-1]):
     try:
         print(f'\tAttempt ({i+1}) at metadata {downloadable["size"]}')
-        r4 = requests.get(downloadable['link'], timeout=timeout, stream=True)
-    except:
-        print(r4.ok,r4.text)
+        r4 = requests.get(downloadable['link'], timeout=60, stream=True)
+    except Exception as e:
         continue
+
     if r4.ok:
         break
     else:
