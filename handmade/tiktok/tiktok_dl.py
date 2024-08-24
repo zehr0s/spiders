@@ -121,8 +121,18 @@ data = {
 }
 
 scrap_url = "https://lovetik.com/api/ajax/search"
-print(f'[+] Scraping {scrap_url}/q={data["query"]}')
-r_aux = requests.post(scrap_url, data=data, headers=headers, timeout=5)
+retries = 10
+for i in range(retries):
+    n = i+1
+    print(f'[+] Attempt ({n}/{retries}) at scraping {scrap_url}/q={data["query"]}')
+    try:
+        r_aux = requests.post(scrap_url, data=data, headers=headers, timeout=timeout)
+    except Exception as e:
+        if n == retries:
+            raise e
+        continue
+    break
+
 links = []
 if r_aux.ok:
     result = json.loads(r_aux.text)
