@@ -82,7 +82,7 @@ try:
         out_path = os.path.join(out_path, author)
         out_name = os.path.join(out_path, '{}-{}-{}.{}'.format(id, v_quality, v_definition, v_format.lower()))
     print(
-        'Downloading {}:\n\tUser: {}\n\tVideo ID: {}\n\tQuality: {}\n\tDefinition: {}\n\tFormat: {}'
+        '[+] Downloading {}:\n\tUser: {}\n\tVideo ID: {}\n\tQuality: {}\n\tDefinition: {}\n\tFormat: {}'
         .format(out_name, author, id, v_quality, v_definition, v_format.lower())
     )
 except:
@@ -95,73 +95,64 @@ except:
         out_path = os.path.join(out_path, author)
         out_name = os.path.join(out_path, '{}.{}'.format(id,'mp4'))
     print(
-        'Downloading {}:\n\tUser: {}\n\tVideo ID: {}'
+        '[+] Downloading {}:\n\tUser: {}\n\tVideo ID: {}'
         .format(out_name, author,id)
     )
 
 # Request video download url
-
-cookies = {
-    # '__cflb': '02DiuEcwseaiqqyPC5qqJA27ysjsZzMZ84oUqfS7Ubkqy'
-    '__cflb': '__cflb=02DiuEcwseaiqqyPC5qqJA27ysjsZzMZ8SSK3Ed6EULbV'
+headers = {
+    'Host': 'lovetik.com',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/5311 (KHTML, like Gecko) Chrome/40.0.821.0 Mobile Safari/5311',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+    'Accept-Language': 'en-US,es;q=0.7,en;q=0.3',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Connection': 'keep-alive',
+    'Cookie': '''cf_clearance=t1eHmdsTkkO8fwgLyI59Hpe.v5hGbHHAaWnr3LpaFFI-1724521842-1.2.1.1-ET7orf_OIKbZvv8_MAW3HqHpJJsDSxvx4wNiOQPuq5KDsrBBNcTMWxZffV54K2xCQhHN6dS6ELKa3dPtb7NT.IwgX1iUsjTbygZhgM_4XBKN4oyOOe8nRtnjbsocVXWukcPf5ZHtQfItNpBc.lQYQ2GFobS409SBUCN7JDfft.tnqD6F1KoMfjCAH54FDeJG9yATBR_pbdcc8r4zMCCaeG5Cbx.yiaAzXQ2lfHmrmFSc1Y4SeEHn4R3rTL3fkz.GRFxJ7KKUS7BSlTpBpdPKhS.rz2j7gq8PrErfkMCKHllv1f5TCPOFzroKOWdxC6yw7W9cs1_jBtYbdn66kANb_Nv2fpIadJbNjXOYq6EHI_o7AjrJnjOdtgCUx5J5ODLj''',
+    'Upgrade-Insecure-Requests': '1',
+    'Sec-Fetch-Dest': 'document',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Site': 'none',
+    'Sec-Fetch-User': '?1',
+    'TE': 'trailers'
 }
 
-params = {
-    'url': 'dl',
+data = {
+    'query': link # f'https://www.tiktok.com/@{author}/video/{id}'
 }
-# r_aux = requests.post('https://ssstik.io/abc')
-# cookies = r_aux.cookies.get_dict()
 
-print(f'\tBase URL: {link}')
-print(f'\tVideo URL: {video_url}')
+scrap_url = "https://lovetik.com/api/ajax/search"
+print(f'[+] Scraping {scrap_url}/q={data["query"]}')
+r_aux = requests.post(scrap_url, data=data, headers=headers, timeout=5)
+links = []
+if r_aux.ok:
+    result = json.loads(r_aux.text)
+    for link in result['links']:
+        if 'mp4' in link['t'].lower():
+            links.append({'size':link['s'].lower(),'link':link['a']})
+else:
+    raise Exception(f"No link found: {r_aux.ok}")
 
-for dl_try in range(32):
-    time.sleep(2)
-    data = {
-        'id': video_url,
-        'locale': 'en',
-        # 'tt': 'blNvVie5',
-        'tt': f'{getChars(2)}{getChars(1).upper()}{getChars(1)}{getChars(1).upper()}{getChars(2)}{getChars(1, numbers=True)}'
-    }
-    r3 = requests.post('https://ssstik.io/abc', headers=headers, params=params, data=data, cookies=cookies)
-    if not r3.ok:
-        raise Exception(f"Status Code: {r3.status_code}")
-    bs = BeautifulSoup(r3.text, "html.parser")
-    # print(bs.find_all('a')[0]['href'])
-    downloadables = []
+for i, downloadable in enumerate(links[::-1]):
     try:
-        downloadables = [soup['href'] for soup in bs.find_all('a')]
-    except KeyError:
-        for downloadable in [soup for soup in bs.find_all('a')]:
-            try:
-                html_obj = downloadable.get('href')
-            except:
-                continue
-            if html_obj and html_obj.startswith('http'):
-                downloadables.append(html_obj)
-    except Exception as e:
-        raise e
-    try:
-        downloadables.pop()
-        if downloadables:
-            break
-    except IndexError:
-        print(f'\tTry: {dl_try+1}')
-
-total = len(downloadables)
-for i, downloadable in enumerate(downloadables[::-1]):
-    try:
-        r4 = requests.get(downloadable, headers=headers)
+        print(f'\tAttempt ({i+1}) at metadata {downloadable["size"]}')
+        r4 = requests.get(downloadable['link'], timeout=timeout, stream=True)
     except:
+        print(r4.ok,r4.text)
         continue
-    if not r4.ok and total == i+1:
-        raise Exception(f"Status Code: {r4.status_code}")
+    if r4.ok:
+        break
+    else:
+        continue
 
 # Create output path
 os.makedirs(out_path, exist_ok=True)
 
 # Download video
+total_size = int(r4.headers.get('content-length', 0))
+downloaded_size = 0
 with open(out_name, 'wb') as f:
     for chunk in r4.iter_content(chunk_size = 1024*1024):
         if chunk:
             f.write(chunk)
+            downloaded_size += len(chunk)
+        print(f"[+] Progress: {downloaded_size}/{total_size} ({100*(downloaded_size/total_size):.2f}%)")
