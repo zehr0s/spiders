@@ -14,7 +14,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 class Downloader:
     # Class attributes
-    def __init__(self, prefix='Downloading', timeout=60):
+    def __init__(self, prefix='Downloading', timeout=10):
         self.timeout = timeout
         self.prefix = prefix
 
@@ -37,20 +37,26 @@ class Downloader:
     def download_image(self, info):
         i, img_url, download_path = info
         start_time = datetime.now()
-        try:
-            r = requests.get(img_url, timeout=self.timeout)
-        except (requests.exceptions.Timeout, requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
-            self.print_custom('Timeout in page url {}'.format(img_url), type=1)
-            shutil.rmtree(download_path, ignore_errors=True)
-            return None
-        except KeyboardInterrupt:
-            self.print_custom('Keyboard Interrupt in {}'.format(img_url), type=1)
-            shutil.rmtree(download_path, ignore_errors=True)
-            sys.exit(1)
-        except Exception as e:
-            self.print_custom(f"Error in {img_url}: {str(e)}", type=1)
-            shutil.rmtree(download_path, ignore_errors=True)
-            return None
+        retries = 10
+        for i in range(retries):
+            n = i+1
+            try:
+                r = requests.get(img_url, timeout=self.timeout)
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
+                self.print_custom('Timeout in page url {} attempt ({})'.format(img_url, n), type=1)
+                if n == retries:
+                    shutil.rmtree(download_path, ignore_errors=True)
+                continue
+            except KeyboardInterrupt:
+                self.print_custom('Keyboard Interrupt in {}'.format(img_url), type=1)
+                shutil.rmtree(download_path, ignore_errors=True)
+                sys.exit(1)
+            except Exception as e:
+                self.print_custom(f"Error in {img_url} attempt ({n}): {str(e)}", type=1)
+                continue
+                if n == retries:
+                    shutil.rmtree(download_path, ignore_errors=True)
+            break
 
         if not r.ok:
             self.print_custom('Connection error in page url {}'.format(img_url), type=1)
