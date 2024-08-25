@@ -64,8 +64,8 @@ except Exception as e:
 try:
     r1 = requests.get(video_url, timeout=timeout, headers=headers)
     bs = BeautifulSoup(r1.text, 'html.parser')
-    with open('data.json', 'w') as f:
-        f.write(bs.prettify())
+    # with open('data.json', 'w') as f:
+    #     f.write(bs.prettify())
     sys.exit()
     meta = json.loads(re.search('{.*downloadAddr.*}', bs.prettify()).group())
     id = list(meta['ItemModule'].keys())[0]
