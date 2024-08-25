@@ -89,7 +89,7 @@ for i, info in enumerate(zip(titles, chapters)):
     os.makedirs(download_path, exist_ok=True)
     dl.download(
         chapter,
-        workers=4,
+        workers=100,
         download_path=download_path
     )
     os.system('clear')

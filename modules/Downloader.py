@@ -38,8 +38,8 @@ class Downloader:
         i, img_url, download_path = info
         start_time = datetime.now()
         retries = 10
-        for i in range(retries):
-            n = i+1
+        for j in range(retries):
+            n = j+1
             try:
                 r = requests.get(img_url, timeout=self.timeout)
             except (requests.exceptions.Timeout, requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
@@ -56,12 +56,21 @@ class Downloader:
                 continue
                 if n == retries:
                     shutil.rmtree(download_path, ignore_errors=True)
+
+            if not r.ok:
+                self.print_custom('Connection error in page url {}'.format(img_url), type=1)
+                if 'end-of-chapter-discord-page.png' in img_url.lower():
+                    break
+                if n == retries:
+                    shutil.rmtree(download_path, ignore_errors=True)
+                continue
+
             break
 
-        if not r.ok:
-            self.print_custom('Connection error in page url {}'.format(img_url), type=1)
-            shutil.rmtree(download_path, ignore_errors=True)
-            return None
+#        if not r.ok:
+#            self.print_custom('Connection error in page url {}'.format(img_url), type=1)
+#            shutil.rmtree(download_path, ignore_errors=True)
+#            return None
 
         # Save the image
         image_path = f'{download_path}/{i+1:02}.jpg'
